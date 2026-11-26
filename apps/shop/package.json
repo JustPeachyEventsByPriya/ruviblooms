@@ -1,0 +1,41 @@
+{
+  "name": "ruvi-blooms",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "dev": "node --env-file-if-exists=.env ./node_modules/@react-router/dev/bin.js dev",
+    "build": "react-router build",
+    "start": "node --env-file-if-exists=.env ./scripts/start.mjs ./build/server/index.js",
+    "typecheck": "react-router typegen && tsc --noEmit",
+    "lint": "biome lint --diagnostic-level=warn app scripts tests",
+    "pretest": "npm run build",
+    "test": "node --test"
+  },
+  "dependencies": {
+    "@fontsource-variable/cormorant-garamond": "^5.2.0",
+    "@fontsource-variable/dm-sans": "^5.2.0",
+    "@react-router/node": "^7.18.6",
+    "@react-router/serve": "^7.18.6",
+    "@shopify/hydrogen": "2026.10.3",
+    "isbot": "^5.1.0",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "react-router": "^7.18.6"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.6.8",
+    "@react-router/dev": "^7.18.6",
+    "@tailwindcss/vite": "~4.1.17",
+    "@types/node": "^22",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "graphql": "^17.1.0",
+    "tailwindcss": "~4.1.17",
+    "typescript": "~5.9.3",
+    "vite": "^6.4.0"
+  }
+}

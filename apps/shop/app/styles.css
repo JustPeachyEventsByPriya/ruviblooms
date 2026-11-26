@@ -1,0 +1,97 @@
+@import 'tailwindcss';
+
+@theme {
+  --color-plum: #321125;
+  --color-wine: #652d49;
+  --color-gold: #e3bf83;
+  --color-blush: #f2cfd6;
+  --color-ivory: #fbf6ef;
+  --color-ink: #351e2c;
+  --color-muted: #634d56;
+  --color-line: #dcc5c8;
+  --font-sans: 'DM Sans Variable', Arial, sans-serif;
+  --font-display: 'Cormorant Garamond Variable', Georgia, serif;
+}
+
+@layer base {
+  html { scroll-behavior: smooth; }
+  body { @apply bg-ivory font-sans text-ink antialiased; }
+  :focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
+  [id] { scroll-margin-top: 1rem; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+  }
+}
+
+@layer components {
+  .shell { @apply mx-auto w-full max-w-[90rem] px-[clamp(1.25rem,5vw,5rem)]; }
+  .section-space { @apply py-10 sm:py-13 lg:py-16; }
+  .eyebrow { @apply text-xs font-bold tracking-[0.19em] uppercase; }
+  .display-heading { @apply font-display text-[clamp(2.7rem,5vw,5.9rem)] leading-[0.91] tracking-[-0.025em]; }
+  .nav-link { @apply text-sm font-semibold tracking-wide hover:text-wine; }
+  .gold-button { @apply inline-flex min-h-12 items-center justify-center bg-gold px-6 py-3 text-sm font-bold text-plum transition-colors hover:bg-ivory motion-reduce:transition-none; }
+  .gold-button:focus-visible { outline-color: var(--color-gold); }
+  .skip-link { @apply fixed top-3 left-3 z-50 -translate-y-32 bg-ivory px-4 py-3 text-plum focus:translate-y-0; }
+}
+
+
+@layer components {
+  .catalog-input { @apply min-h-11 border border-line bg-white px-3 py-2 text-ink; }
+  .gold-button:disabled { @apply cursor-not-allowed opacity-60; }
+}
+
+@layer components {
+  .masthead { @apply border-b border-gold/25; }
+  .masthead-link { @apply relative inline-flex min-h-11 items-center text-sm font-semibold tracking-wide text-ivory; }
+  .masthead-link:hover, .masthead-link[aria-current='page'] { color: var(--color-gold); }
+  a.masthead-link::after { @apply absolute inset-x-0 bottom-1 h-px origin-left scale-x-0 bg-current content-['']; }
+  a.masthead-link:is(:hover, :focus-visible, [aria-current='page'])::after { @apply scale-x-100; }
+  .menu-icon { @apply relative block h-3 w-4; }
+  .menu-icon::before, .menu-icon::after { @apply absolute left-0 h-px w-full bg-current content-['']; }
+  .menu-icon::before { top: 3px; }
+  .menu-icon::after { bottom: 3px; }
+  .masthead-link[aria-expanded='true'] .menu-icon::before { transform: translateY(2.5px) rotate(45deg); }
+  .masthead-link[aria-expanded='true'] .menu-icon::after { transform: translateY(-2.5px) rotate(-45deg); }
+  .mobile-panel { display: grid; grid-template-rows: 0fr; opacity: 0; }
+  .mobile-panel[data-open='true'] { grid-template-rows: 1fr; opacity: 1; }
+  @media (min-width: 48rem) { .mobile-panel { display: none; } }
+  .variant-option { @apply flex min-h-11 cursor-pointer items-center rounded-sm border border-line px-4 py-2 text-sm font-medium; }
+  input:checked + .variant-option { @apply border-wine bg-[#f3e5e4] text-wine; }
+  input:focus-visible + .variant-option { outline: 2px solid var(--color-wine); outline-offset: 3px; }
+  input:disabled + .variant-option { @apply cursor-not-allowed text-muted line-through; }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .masthead { view-transition-name: store-header; }
+  .store-footer { view-transition-name: store-footer; }
+  ::view-transition-old(root) { animation: 170ms ease-out both screen-out; }
+  ::view-transition-new(root) { animation: 260ms ease-out both screen-in; }
+  ::view-transition-old(store-header), ::view-transition-old(store-footer) { animation: none; opacity: 0; }
+  ::view-transition-new(store-header), ::view-transition-new(store-footer) { animation: none; }
+  .masthead-link, a.masthead-link::after, .menu-icon::before, .menu-icon::after {
+    transition: color 160ms ease, transform 180ms ease;
+  }
+  .mobile-panel { transition: grid-template-rows 220ms ease, opacity 160ms ease; }
+  .variant-option { transition: background-color 180ms ease, border-color 180ms ease, transform 140ms ease; }
+  .variant-option:active, .gold-button:active:not(:disabled) { transform: translateY(1px); }
+  .variant-change, .bag-summary { animation: 230ms ease-out both selection-in; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none; }
+}
+@keyframes screen-out { to { opacity: 0; } }
+@keyframes screen-in { from { opacity: 0; transform: translateY(5px); } }
+@keyframes selection-in { from { opacity: .55; transform: translateY(2px); } }
+
+
+
+@layer components {
+  .masthead-logo {
+    /* Feather only the surrounding plum field. Keep the monogram and wordmark fully opaque. */
+    mask-image:
+      linear-gradient(to right, transparent, black 17%, black 83%, transparent),
+      linear-gradient(to bottom, transparent, black 4%, black 96%, transparent);
+    mask-composite: intersect;
+  }
+}
