@@ -1,5 +1,4 @@
-import {createRoot} from 'react-dom/client';
-import {RentalsApp, type RentalInquiry} from 'ruvi-blooms-rentals/react';
+import type {RentalInquiry} from './RentalsApp';
 
 async function sendViaWeb3Forms(inquiry: RentalInquiry, accessKey: string) {
   const {items, name, email, phone, eventDate, venue} = inquiry;
@@ -28,29 +27,8 @@ async function sendViaWeb3Forms(inquiry: RentalInquiry, accessKey: string) {
   return 'Your rental inquiry was sent.';
 }
 
-async function sendInquiry(inquiry: RentalInquiry) {
-  const accessKey = import.meta.env.VITE_WEB3FORMS_ACCESS_KEY?.trim();
-  if (accessKey) return sendViaWeb3Forms(inquiry, accessKey);
-  const response = await fetch('/api/rental-inquiry', {
-    method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify(inquiry),
-  }).catch(() => {
-    throw new Error('Unable to reach the local inquiry server. Please try again.');
-  });
-  const result = await response.json().catch(() => null);
-  if (!response.ok || !result) {
-    throw new Error(result?.error || 'The local inquiry server is unavailable. Please try again.');
-  }
-  return result.mode === 'capture'
-    ? 'Test inquiry saved locally. No email was sent.'
-    : 'Your rental inquiry was sent.';
+export async function submitRentalInquiry(inquiry: RentalInquiry) {
+  const key = import.meta.env.VITE_WEB3FORMS_ACCESS_KEY?.trim();
+  if (!key) throw new Error('Rental inquiry email is not configured yet.');
+  return sendViaWeb3Forms(inquiry, key);
 }
-
-createRoot(document.getElementById('root')!).render(
-  <RentalsApp
-    onInquiry={sendInquiry}
-    whatsappUrl={import.meta.env.VITE_WHATSAPP_URL?.trim()}
-    instagramUrl={import.meta.env.VITE_INSTAGRAM_URL?.trim()}
-  />,
-);

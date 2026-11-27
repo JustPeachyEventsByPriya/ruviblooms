@@ -6,16 +6,13 @@
   --blush: #f0dbdd;
   --muted: #674f57;
   --line: #decacf;
-  --serif: 'Ruvi Display', Georgia, serif;
+  --serif: var(--font-display);
   background: var(--ivory);
   color: var(--plum);
-  font: 16px/1.55 'Ruvi Sans', Arial, sans-serif;
+  font: 16px/1.55 var(--font-sans);
   isolation: isolate;
   container: ruvi-rentals / inline-size;
 }
-@font-face{font-family:'Ruvi Display';src:url('./assets/display.woff2') format('woff2');font-weight:300 700;font-display:swap}
-@font-face{font-family:'Ruvi Display';src:url('./assets/display-italic.woff2') format('woff2');font-weight:300 700;font-style:italic;font-display:swap}
-@font-face{font-family:'Ruvi Sans';src:url('./assets/sans.woff2') format('woff2');font-weight:100 1000;font-display:swap}
 .rb-rentals *, .rb-rentals *::before, .rb-rentals *::after { box-sizing:border-box; }
 .rb-rentals :where(h1,h2,h3,p,figure,ul) { margin:0; }
 .rb-rentals :where(h1,h2,h3) { font-family:var(--serif); font-weight:500; line-height:.95; }
@@ -25,16 +22,6 @@
 .rb-rentals :focus-visible { outline:2px solid currentColor; outline-offset:4px; }
 .rb-rentals img { display:block; max-width:100%; }
 .rb-rentals .rb-shell { width:min(100%,1440px); margin:auto; padding-inline:clamp(20px,5cqw,76px); }
-.rb-rentals .rb-header { background:#2a0a20; color:var(--ivory); border-bottom:1px solid #5c374a; }
-.rb-rentals .rb-nav { display:flex; justify-content:space-between; align-items:center; gap:1rem; min-height:90px; }
-.rb-rentals .rb-identity { display:flex; align-items:center; gap:14px; }
-.rb-rentals .rb-identity img { height:78px; width:auto; mask-image:linear-gradient(to right,transparent,#000 15%,#000 85%,transparent); }
-.rb-rentals .rb-identity span { padding-left:14px; border-left:1px solid #79576b; color:var(--gold); font-size:.76rem; font-weight:700; letter-spacing:.14em; text-transform:uppercase; }
-.rb-rentals .rb-nav nav { display:flex; gap:clamp(.5rem,2cqw,2rem); align-items:center; }
-.rb-rentals .rb-nav button,.rb-rentals .rb-footer button { border:0; background:transparent; color:inherit; min-height:44px; padding:.4rem; font-weight:600; font-size:.875rem; }
-.rb-rentals .rb-nav button:hover,.rb-rentals .rb-footer button:hover { color:var(--gold); }
-.rb-rentals .rb-nav .rb-bag { border:1px solid #79576b; padding:.4rem .7rem; }
-.rb-rentals .rb-bag span { display:inline-grid; min-width:1.4rem; place-items:center; margin-left:.2rem; color:var(--gold); }
 .rb-rentals .rb-hero { display:grid; grid-template-columns:minmax(0,1fr); background:#f3e4e0; }
 .rb-rentals .rb-intro { padding:clamp(2.7rem,7cqw,7.2rem) clamp(20px,5cqw,76px); align-self:center; }
 .rb-rentals .rb-kicker { font-size:.71rem; letter-spacing:.18em; font-weight:800; text-transform:uppercase; color:var(--wine); }
@@ -63,9 +50,6 @@
 .rb-rentals .rb-card-body > p:not(.rb-kicker) { color:var(--muted); margin-bottom:1rem; }
 .rb-rentals .rb-card-action { margin-top:auto; background:transparent; border:1px solid var(--line); padding:.5rem .8rem; min-height:44px; color:var(--wine); font-size:.86rem; font-weight:700; }
 .rb-rentals .rb-card-action:hover,.rb-rentals .rb-card-action[aria-pressed=true] { background:var(--blush); border-color:var(--wine); }
-.rb-rentals .rb-footer { background:var(--plum); color:var(--ivory); padding-block:1.35rem; }
-.rb-rentals .rb-footer .rb-shell { display:flex; gap:1rem; align-items:center; justify-content:space-between; }
-.rb-rentals .rb-footer span { font:500 1.55rem var(--serif); color:var(--gold); }
 .rb-rentals .rb-dialog { margin:auto; width:min(calc(100% - 24px),520px); max-height:90dvh; overflow:auto; padding:1.4rem; border:1px solid var(--line); background:var(--ivory); color:var(--plum); }
 .rb-rentals .rb-dialog::backdrop { background:#210918bd; }
 .rb-rentals .rb-dialog-head { display:flex; align-items:center; justify-content:space-between; gap:1rem; margin-bottom:1.25rem; }
@@ -82,12 +66,6 @@
 @container ruvi-rentals (min-width:760px) {
   .rb-rentals .rb-hero { grid-template-columns:47% 53%; }
   .rb-rentals .rb-hero-image { aspect-ratio:auto; }
-}
-@container ruvi-rentals (max-width:520px) {
-  .rb-rentals .rb-nav { min-height:72px; }
-  .rb-rentals .rb-identity img { height:60px; }
-  .rb-rentals .rb-identity span { display:none; }
-  .rb-rentals .rb-nav nav > button:first-child { display:none; }
 }
 
 

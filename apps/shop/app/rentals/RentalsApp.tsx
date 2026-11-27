@@ -1,7 +1,6 @@
-import {useId, useRef, useState, type FormEvent} from 'react';
+import {useEffect, useId, useRef, useState, type FormEvent} from 'react';
 import {categories, catalogRentals, type Category, type Rental} from './catalog';
 import hero from './assets/photo-img_0787.jpg';
-import logo from './assets/ruvi-logo.png';
 import './rentals.css';
 
 export type {Rental, Category} from './catalog';
@@ -28,6 +27,7 @@ const formatPrice = new Intl.NumberFormat('en-CA', {style: 'currency', currency:
 export function RentalsApp({rentals = catalogRentals, sample = false, whatsappUrl, instagramUrl, onInquiry}: RentalsAppProps) {
   const [filter, setFilter] = useState<Category | 'All rentals'>('All rentals');
   const [selected, setSelected] = useState<Record<string, number>>({});
+  const [cartReady, setCartReady] = useState(false);
   const [feedback, setFeedback] = useState('');
   const [sending, setSending] = useState(false);
   const [venue, setVenue] = useState('');
@@ -47,6 +47,23 @@ export function RentalsApp({rentals = catalogRentals, sample = false, whatsappUr
   const count = cart.reduce((sum, item) => sum + selected[item.id], 0);
   const subtotal = cart.reduce((sum, item) => sum + (item.samplePrice ?? 0) * selected[item.id], 0);
 
+  useEffect(() => {
+    try {
+      const saved = JSON.parse(sessionStorage.getItem('ruvi:rental-cart') ?? '{}');
+      if (saved && typeof saved === 'object') {
+        setSelected(Object.fromEntries(Object.entries(saved).filter(([, quantity]) =>
+          typeof quantity === 'number' && Number.isInteger(quantity) && quantity > 0 && quantity <= 999
+        )) as Record<string, number>);
+      }
+    } catch { /* The rental cart still works in memory. */ }
+    setCartReady(true);
+  }, []);
+
+  useEffect(() => {
+    if (!cartReady) return;
+    try { sessionStorage.setItem('ruvi:rental-cart', JSON.stringify(selected)); } catch { /* Storage can be unavailable. */ }
+  }, [cartReady, selected]);
+
   function browse() {
     catalog.current?.focus({preventScroll: true});
     catalog.current?.scrollIntoView({block: 'start'});
@@ -54,7 +71,7 @@ export function RentalsApp({rentals = catalogRentals, sample = false, whatsappUr
 
   function setQuantity(id: string, quantity: number) {
     setFeedback('');
-    setSelected(items => ({...items, [id]: Math.max(0, quantity)}));
+    setSelected(items => ({...items, [id]: Math.max(0, Math.min(999, quantity))}));
   }
 
   async function prepare(event: FormEvent<HTMLFormElement>) {
@@ -80,18 +97,6 @@ export function RentalsApp({rentals = catalogRentals, sample = false, whatsappUr
 
   return (
     <div className="rb-rentals">
-      <header className="rb-header">
-        <div className="rb-shell rb-nav">
-          <div className="rb-identity">
-            <img src={logo} width="1254" height="816" alt="Ruvi Blooms" />
-            <span>Event Rentals</span>
-          </div>
-          <nav aria-label="Rental navigation">
-            <button type="button" onClick={browse}>Browse rentals</button>
-            <button type="button" className="rb-bag" ref={opener} aria-haspopup="dialog" onClick={() => dialog.current?.showModal()}>Rental cart <span>{count}</span></button>
-          </nav>
-        </div>
-      </header>
       <section className="rb-hero" aria-label="Ruvi Blooms event rentals">
         <div className="rb-intro">
           <p className="rb-kicker">Ruvi Blooms Rentals</p>
@@ -108,6 +113,7 @@ export function RentalsApp({rentals = catalogRentals, sample = false, whatsappUr
         <div className="rb-section-head">
           <h2>Explore the collection</h2>
           <p>{sample ? 'Sample inventory and imagery' : 'Pictured styling varies by event'}</p>
+          <button type="button" className="rb-button" ref={opener} aria-haspopup="dialog" onClick={() => dialog.current?.showModal()}>Rental cart <span>{count}</span></button>
         </div>
         <div className="rb-filters" role="group" aria-label="Filter rentals">
           {(['All rentals', ...categories] as const).map(category => (
@@ -141,9 +147,6 @@ export function RentalsApp({rentals = catalogRentals, sample = false, whatsappUr
           ))}
         </ul> : <p>No rentals in this category yet.</p>}
       </section>
-      <footer className="rb-footer">
-        <div className="rb-shell"><span>Ruvi Blooms Rentals</span><button type="button" onClick={browse}>Browse rentals</button></div>
-      </footer>
       {(whatsappUrl || instagramUrl) && <aside className="rb-social" aria-label="Contact Ruvi Blooms">
         {whatsappUrl && <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" aria-label="Message Ruvi Blooms on WhatsApp">
           <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7"><path d="M4 19.5 5 16a8.4 8.4 0 1 1 3.1 3l-4.1.5Z"/><path d="M9 8.2c-2.6 2.4 3.2 8 5.9 6.1l.8-.9-2.3-1.2-.8.8a6 6 0 0 1-2.5-2.6l.6-.7-1-2.1-.7.6Z" strokeLinejoin="round"/></svg>

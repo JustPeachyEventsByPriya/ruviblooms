@@ -1,18 +1,21 @@
 # Ruvi Blooms
 
-This repository contains only Ruvi Blooms. Just Peachy Events is a separate project.
+Ruvi Blooms is a single Shopify Hydrogen and React Router app in `apps/shop`. Shop uses Shopify-hosted checkout. The rental catalog at `/rentals` shares the site navigation and footer, with a separate browser-session cart and Web3Forms inquiry.
 
-| App | Directory | Development | Production build |
-| --- | --- | --- | --- |
-| Shop (Shopify Hydrogen) | apps/shop | npm ci, then npm run dev | npm run build |
-| Rentals (React and Vite) | apps/rentals | npm ci, then npm run dev | npm run build |
+## Local development
 
-Use Node 22.12 or newer. Run the commands from the selected app directory. Both apps have their own lockfile and environment example.
+From `apps/shop`, run `npm ci` and `npm run dev`. Use the environment template there. Without Shopify credentials the app uses its labeled mock catalog. The rentals route requires a Web3Forms key to send email.
 
-## Domain plan
+## Cloudflare Workers
 
-Use ruviblooms.com as the canonical brand domain. When a host is selected, the intended layout is Shop at / and Rentals at /rentals, with navigation between the two. Shared-domain routing requires host configuration and verification. This initial import includes independent apps and no deployment workflow.
+| Connected build setting | Value |
+| --- | --- |
+| Root directory | `apps/shop` |
+| Build command | `npm ci && npm run build:cloudflare` |
+| Deploy command | `npx wrangler deploy` |
 
-The Hydrogen storefront needs a host that runs its server and can connect to Shopify. Rental inquiries stay separate from Shopify checkout. The Rentals app can use Web3Forms for live inquiries and local capture for development.
+The Worker name in `apps/shop/wrangler.jsonc` must match the connected Worker. The Cloudflare build outputs a single SSR app in `.cloudflare-build`. Run `npx wrangler dev --local` after building to verify it locally.
 
-Set DNS at Spaceship only after the selected host provides the required records. Preserve existing email-related DNS records.
+Set `PUBLIC_STORE_DOMAIN` and `PUBLIC_STOREFRONT_API_TOKEN` as Worker runtime values for the live catalog. Set `VITE_WEB3FORMS_ACCESS_KEY` as a build variable using the public form key issued for `ruviblooms@gmail.com`. Optional `VITE_WHATSAPP_URL` and `VITE_INSTAGRAM_URL` are also build variables. Keep credentials out of Git.
+
+The intended custom domain is `ruviblooms.com`. Connect it after testing the Worker on its preview address. Just Peachy Events is a separate project.
