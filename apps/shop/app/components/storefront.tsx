@@ -5,6 +5,7 @@ const navigation = [
   {label: 'Collections', href: '/collections'},
   {label: 'Signature Edit', href: '/#signature-edit'},
   {label: 'Our Story', href: '/#story'},
+  {label: 'Rentals', href: '/rentals'},
 ];
 
 export type EditorialImage = {
