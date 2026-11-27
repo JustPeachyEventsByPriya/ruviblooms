@@ -1,6 +1,6 @@
 import {useEffect, useId, useRef, useState, type FormEvent} from 'react';
 import {categories, catalogRentals, type Category, type Rental} from './catalog';
-import hero from './assets/photo-img_0787.jpg';
+import {rentalPhoto} from './photos';
 import './rentals.css';
 
 export type {Rental, Category} from './catalog';
@@ -21,6 +21,10 @@ export type RentalsAppProps = {
   instagramUrl?: string;
   onInquiry?: (inquiry: RentalInquiry) => void | string | Promise<void | string>;
 };
+
+const hero = rentalPhoto('photo-img_0787');
+const cardSizes = 'auto, (max-width: 620px) calc(100vw - 40px), (max-width: 930px) 45vw, (max-width: 1240px) 30vw, 24vw';
+const gallerySizes = '(max-width: 844px) calc(100vw - 72px), 774px';
 
 const formatPrice = new Intl.NumberFormat('en-CA', {style: 'currency', currency: 'CAD', currencyDisplay: 'code'}).format;
 
@@ -105,7 +109,7 @@ export function RentalsApp({rentals = catalogRentals, sample = false, whatsappUr
           <button type="button" className="rb-button" onClick={browse}>Explore the rentals</button>
         </div>
         <figure className="rb-hero-image">
-          <img src={hero} alt="Cream loveseat and matching chairs framed by flowers" fetchPriority="high" width="1150" height="863" />
+          <img src={hero.src} srcSet={hero.srcSet} sizes="(min-width: 760px) 53vw, 100vw" alt="Cream loveseat and matching chairs framed by flowers" fetchPriority="high" width="1150" height="863" />
           <figcaption>Ruvi Blooms event styling</figcaption>
         </figure>
       </section>
@@ -123,7 +127,7 @@ export function RentalsApp({rentals = catalogRentals, sample = false, whatsappUr
         {visible.length ? <ul className="rb-grid">
           {visible.map(item => (
             <li key={item.id} className="rb-card">
-              <img src={item.image} alt={item.alt} width="800" height="600" loading="lazy" />
+              <img src={item.image.src} srcSet={item.image.srcSet} sizes={cardSizes} alt={item.alt} width="800" height="600" loading="lazy" decoding="async" />
               <div className="rb-card-body">
                 <p className="rb-kicker">{item.category}</p>
                 <h3>{item.name}</h3>
@@ -163,7 +167,7 @@ export function RentalsApp({rentals = catalogRentals, sample = false, whatsappUr
         </div>
         {photos[photoIndex] && (
           <figure className="rb-gallery">
-            <img src={photos[photoIndex].image} alt={photos[photoIndex].alt} />
+            <img src={photos[photoIndex].image.src} srcSet={photos[photoIndex].image.srcSet} sizes={gallerySizes} alt={photos[photoIndex].alt} />
             <figcaption className="rb-gallery-controls">
               <button type="button" onClick={() => setPhotoIndex(index => (index - 1 + photos.length) % photos.length)}>Previous photo</button>
               <span role="status">{photoIndex + 1} of {photos.length}</span>

@@ -31,8 +31,8 @@
 .rb-rentals .rb-button { padding:.8rem 1.3rem; border:1px solid var(--plum); background:var(--plum); color:var(--ivory); font-weight:700; font-size:.9rem; min-height:44px; }
 .rb-rentals .rb-button:hover { background:var(--wine); }
 .rb-rentals .rb-intro .rb-button { margin-top:1.45rem; }
-.rb-rentals .rb-hero-image { position:relative; width:100%; min-width:0; overflow:hidden; min-height:240px; aspect-ratio:3/2; background:var(--wine); }
-.rb-rentals .rb-hero-image img { width:100%; height:100%; object-fit:cover; }
+.rb-rentals .rb-hero-image { position:relative; width:100%; min-width:0; overflow:hidden; min-height:240px; aspect-ratio:1150/863; background:#f3e4e0; }
+.rb-rentals .rb-hero-image img { width:100%; height:100%; object-fit:contain; }
 .rb-rentals .rb-hero-image figcaption { position:absolute; bottom:12px; right:12px; color:var(--ivory); background:var(--plum); padding:3px 9px; font-size:.75rem; }
 .rb-rentals .rb-catalog { padding-block:clamp(2.75rem,6cqw,5rem); scroll-margin-top:1rem; }
 .rb-rentals .rb-section-head { display:flex; flex-wrap:wrap; gap:.65rem 2rem; align-items:end; justify-content:space-between; }
@@ -65,7 +65,7 @@
 .rb-rentals .rb-sr { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; }
 @container ruvi-rentals (min-width:760px) {
   .rb-rentals .rb-hero { grid-template-columns:47% 53%; }
-  .rb-rentals .rb-hero-image { aspect-ratio:auto; }
+  .rb-rentals .rb-hero-image { aspect-ratio:auto; display:grid; align-items:center; }
 }
 
 

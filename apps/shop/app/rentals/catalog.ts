@@ -1,34 +1,36 @@
-import seating from './assets/white-loveseat.jpg';
-import arch from './assets/white-floral-arch.jpg';
-import blueFrame from './assets/blue-floral-frame.jpg';
-import pinkArch from './assets/pink-arch-display.jpg';
-import details from './assets/ceremony-details.jpg';
+import {rentalPhoto, type RentalPhoto} from './photos';
 
-import photo0146 from './assets/photo-img_0146.jpg';
-import photo1025 from './assets/photo-img_1025.jpg';
-import photo1032 from './assets/photo-img_1032.jpg';
-import photo0014 from './assets/photo-img_0014.jpg';
-import photo0003 from './assets/photo-img_0003.jpg';
-import photo0059 from './assets/photo-img_0059.jpg';
-import photo0173 from './assets/photo-img_0173.jpg';
-import photo0181 from './assets/photo-img_0181.jpg';
-import photo0085 from './assets/photo-img_0085.jpg';
-import photo0787 from './assets/photo-img_0787.jpg';
-import photo0788 from './assets/photo-img_0788.jpg';
-import photo5680 from './assets/photo-img_5680.jpg';
-import photo9031 from './assets/photo-img_9031.jpg';
+const seating = rentalPhoto('white-loveseat');
+const arch = rentalPhoto('white-floral-arch');
+const blueFrame = rentalPhoto('blue-floral-frame');
+const pinkArch = rentalPhoto('pink-arch-display');
+const details = rentalPhoto('ceremony-details');
 
-import photo3745 from './assets/photo-img_3745.jpg';
-import photo4834 from './assets/photo-img_4834.jpg';
-import photo4845 from './assets/photo-img_4845.jpg';
-import photo7331 from './assets/photo-img_7331.jpg';
-import photo7334 from './assets/photo-img_7334.jpg';
-import photo7950 from './assets/photo-img_7950.jpg';
-import photo7955 from './assets/photo-img_7955.jpg';
+const photo0146 = rentalPhoto('photo-img_0146');
+const photo1025 = rentalPhoto('photo-img_1025');
+const photo1032 = rentalPhoto('photo-img_1032');
+const photo0014 = rentalPhoto('photo-img_0014');
+const photo0003 = rentalPhoto('photo-img_0003');
+const photo0059 = rentalPhoto('photo-img_0059');
+const photo0173 = rentalPhoto('photo-img_0173');
+const photo0181 = rentalPhoto('photo-img_0181');
+const photo0085 = rentalPhoto('photo-img_0085');
+const photo0787 = rentalPhoto('photo-img_0787');
+const photo0788 = rentalPhoto('photo-img_0788');
+const photo5680 = rentalPhoto('photo-img_5680');
+const photo9031 = rentalPhoto('photo-img_9031');
 
-import blushLoveseat from './assets/photo-img_81001.jpg';
-import blushLoveseatScene from './assets/photo-img_8100.jpg';
-import blueTableDetail from './assets/photo-img_9030.jpg';
+const photo3745 = rentalPhoto('photo-img_3745');
+const photo4834 = rentalPhoto('photo-img_4834');
+const photo4845 = rentalPhoto('photo-img_4845');
+const photo7331 = rentalPhoto('photo-img_7331');
+const photo7334 = rentalPhoto('photo-img_7334');
+const photo7950 = rentalPhoto('photo-img_7950');
+const photo7955 = rentalPhoto('photo-img_7955');
+
+const blushLoveseat = rentalPhoto('photo-img_81001');
+const blushLoveseatScene = rentalPhoto('photo-img_8100');
+const blueTableDetail = rentalPhoto('photo-img_9030');
 
 export const categories = ['Seating', 'Reusable Florals', 'Backdrops & Staging', 'Tabletop & Décor'] as const;
 export type Category = typeof categories[number];
@@ -38,10 +40,10 @@ export type Rental = {
   category: Category;
   name: string;
   description: string;
-  image: string;
+  image: RentalPhoto;
   samplePrice?: number;
   alt: string;
-  photos?: readonly {image: string; alt: string}[];
+  photos?: readonly {image: RentalPhoto; alt: string}[];
 };
 
 export const catalogRentals: Rental[] = [
